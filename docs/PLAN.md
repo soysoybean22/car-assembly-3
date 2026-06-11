@@ -134,7 +134,7 @@ AssemblyFlowTest:
 | Phase | 목표 | 테스트 | 완료 |
 |-------|------|--------|------|
 | 1 | enum + CarSpec 도입 | CarTypeTest, EngineTest, BrakeSystemTest, SteeringSystemTest, CarSpecTest | ☑ |
-| 2 | 호환성 규칙 단일화 | CompatibilityCheckerTest | ☐ |
+| 2 | 호환성 규칙 단일화 | CompatibilityCheckerTest | ☑ |
 | 3 | 서비스 레이어 분리 | CarAssemblyServiceTest | ☐ |
 | 4 | UI 레이어 분리 | InputHandlerTest | ☐ |
 | 5 | 흐름 분리 + main() 정리 | AssemblyFlowTest | ☐ |
