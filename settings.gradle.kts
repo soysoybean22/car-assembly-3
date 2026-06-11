@@ -1,0 +1,1 @@
+rootProject.name = "car-assembly-3"
