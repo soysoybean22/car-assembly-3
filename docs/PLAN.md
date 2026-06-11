@@ -1,6 +1,18 @@
 # PLAN.md
 
-리팩토링을 단계적으로 진행한다. 각 Phase는 독립적으로 빌드·테스트가 통과되어야 다음 Phase로 넘어간다.
+## 진행 방식 — TDD
+
+모든 Phase는 아래 순서를 반드시 따른다.
+
+```
+1. 테스트 작성   → 구현이 없으므로 컴파일·테스트 실패 (RED)
+2. RED 확인      → ./gradlew test 실패 확인
+3. 구현          → 테스트를 통과시키는 최소한의 코드 작성
+4. GREEN 확인    → ./gradlew test 전체 통과 확인
+5. 커밋          → RED 커밋 + GREEN 커밋 분리
+```
+
+각 Phase는 이전 Phase의 GREEN이 확인된 상태에서만 시작한다.
 
 ---
 
@@ -119,9 +131,9 @@ AssemblyFlowTest:
 
 ## 체크리스트
 
-| Phase | 목표 | 테스트 통과 | 완료 |
-|-------|------|-------------|------|
-| 1 | enum + CarSpec 도입 | CarTypeTest, CarSpecTest | ☐ |
+| Phase | 목표 | 테스트 | 완료 |
+|-------|------|--------|------|
+| 1 | enum + CarSpec 도입 | CarTypeTest, EngineTest, BrakeSystemTest, SteeringSystemTest, CarSpecTest | ☑ |
 | 2 | 호환성 규칙 단일화 | CompatibilityCheckerTest | ☐ |
 | 3 | 서비스 레이어 분리 | CarAssemblyServiceTest | ☐ |
 | 4 | UI 레이어 분리 | InputHandlerTest | ☐ |

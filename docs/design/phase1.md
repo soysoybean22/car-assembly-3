@@ -1,5 +1,16 @@
 # Phase 1 설계 — enum 도입 및 도메인 모델 정의
 
+## 진행 방식
+
+TDD 순서를 따른다.
+
+```
+1. 테스트 5개 작성 (model 패키지 클래스 없음 → RED)
+2. ./gradlew test → 컴파일 에러로 실패 확인
+3. model 패키지 5개 클래스 구현
+4. ./gradlew test → 전체 GREEN 확인
+```
+
 ## 목표 요약
 
 `Assemble.java`의 정수 상수(`SEDAN=1`, `stack[0]` 등)를 타입 안전한 `enum`과 Value Object로 교체한다.
@@ -26,6 +37,8 @@ src/
         ├── BrakeSystemTest.java   ← 신규
         ├── SteeringSystemTest.java← 신규
         └── CarSpecTest.java       ← 신규
+
+build.gradle.kts                   ← UTF-8 컴파일 옵션 추가
 ```
 
 ---
@@ -171,6 +184,7 @@ public class CarSpec {
 **설계 근거:**
 - 불변 객체(생성자 주입)가 아닌 단계별 세터 방식을 채택한다. 사용자가 한 단계씩 선택을 완성하는 흐름이므로, 선택 중간 상태를 자연스럽게 표현할 수 있다.
 - `isComplete()`는 `AssemblyFlow`(Phase 5)에서 최종 단계 진입 조건 확인에 사용한다.
+- `reset()`은 조립 완료 후 처음 화면으로 돌아갈 때 상태를 초기화한다 (`Assemble.java`의 `step = CarType_Q` 전환에 대응).
 - `static int[] stack`을 이 클래스가 대체한다.
 
 ---
@@ -182,6 +196,7 @@ public class CarSpec {
 | `fromMenuNumber()` 예외를 checked가 아닌 `IllegalArgumentException`으로 | 유효 범위 검사는 `InputHandler`(Phase 4)가 먼저 담당하므로 여기서는 프로그래밍 오류로 간주 |
 | `BrakeSystem.BOSCH`와 `SteeringSystem.BOSCH`를 별개 enum으로 | 제동장치와 조향장치는 서로 다른 타입 — 같은 이름이라도 혼용되면 컴파일 오류로 잡힌다 |
 | `CarSpec`을 Record가 아닌 일반 클래스로 | Java 16 미만 호환성 유지 및 단계별 부분 세팅 지원 |
+| `build.gradle.kts`에 `options.encoding = "UTF-8"` 추가 | Windows 기본 인코딩(x-windows-949)에서 한글 메서드명 컴파일 오류 발생 — 명시적 UTF-8 지정으로 해결 |
 
 ---
 
@@ -256,7 +271,8 @@ public class CarSpec {
 
 ## Phase 1 완료 기준
 
-- `./gradlew test` 실행 시 위 테스트 전부 GREEN
-- `Assemble.java` 변경 없음 (기존 동작 유지)
-- `model/` 패키지 5개 파일 추가
-- `src/test/java/model/` 5개 테스트 파일 추가
+- `./gradlew test` 실행 시 위 테스트 전부 GREEN ☑
+- `Assemble.java` 변경 없음 (기존 동작 유지) ☑
+- `model/` 패키지 5개 파일 추가 ☑
+- `src/test/java/model/` 5개 테스트 파일 추가 ☑
+- `build.gradle.kts` UTF-8 인코딩 옵션 추가 ☑
